@@ -1,3 +1,5 @@
+import time
+
 def sudoku_cells():
     return_list = []
     for i in range(9):
@@ -19,6 +21,7 @@ def sudoku_arcs():
     return return_list
     pass
 
+
 def read_board(path):
 
     in_file = open(path)
@@ -35,12 +38,18 @@ def read_board(path):
 
     in_file.close()
 
+    return board
+
+    pass
+
+
+def board_to_dict(board):
     return_dict = {}
 
     possible_values = []
 
     for i in range(9):
-        possible_values.append(i+1)
+        possible_values.append(i + 1)
 
     for (i, row) in enumerate(board):
         for (j, col) in enumerate(board[i]):
@@ -53,7 +62,6 @@ def read_board(path):
 
     return return_dict
 
-    pass
 
 class Sudoku(object):
 
@@ -64,6 +72,19 @@ class Sudoku(object):
 
     def __init__(self, board):
         self.board = board
+        pass
+
+    def get_board(self):
+        _board = []
+
+        for i in range(9):
+            row = []
+            for j in range(9):
+                num = list(self.get_values((i, j)))[0]
+                row.append(num)
+            _board.append(row)
+
+        return _board
         pass
 
     def get_values(self, cell):
@@ -219,3 +240,59 @@ class Sudoku(object):
         self.infer_with_guessing_helper(copy_board)
 
         pass
+
+
+def print_board(board):
+    for i in range(9):
+        for j in range(9):
+            print board[i][j],
+            if (j+1)%3 == 0:
+                print " ",
+            if (j+1)%9 == 0:
+                print
+        print
+        if (i+1)%3 == 0 and (i+1) != 9:
+            print
+
+
+def solve_board(path):
+
+    board = read_board(path)
+
+    print
+
+    print_board(board)
+
+    sudoku = Sudoku(board_to_dict(board))
+
+    start = time.time()
+
+    sudoku.infer_ac3()
+
+    if sudoku.check_solved():
+        end = time.time()
+        total = end - start
+        print "Easy puzzle solved in " + str(total) + " seconds."
+        print
+        print_board(sudoku.get_board())
+        return
+
+    sudoku.infer_improved()
+
+    if sudoku.check_solved():
+        end = time.time()
+        total = end - start
+        print "Medium puzzle solved in " + str(total) + " seconds."
+        print
+        print_board(sudoku.get_board())
+        return
+
+    sudoku.infer_with_guessing()
+
+    if sudoku.check_solved():
+        end = time.time()
+        total = end - start
+        print "Hard puzzle solved in " + str(total) + " seconds."
+        print
+        print_board(sudoku.get_board())
+        return
