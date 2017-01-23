@@ -5,12 +5,14 @@ CMPSC 442 (Artificial Intelligence Course) Project 3: Implement a Sudoku solver 
 10/13/2016
 
 TO RUN: 
-  python -i sudoku_solver.py
-  >>> solve_board(path_to_text_file)
+
+    python -i sudoku_solver.py
+    solve_board(path_to_text_file)
 
 EXAMPLE:
-  python -i sudoku_solver.py
-  >>> solve_board("sudoku/medium1.txt")
+
+    python -i sudoku_solver.py
+    solve_board("sudoku/medium1.txt")
 
 This program uses three techniques to solve any solvable Sudoku puzzle.
 They all stem from the arc consistency algorithm AC-3. Similar to how a person goes about solving a Sudoku puzzle.
